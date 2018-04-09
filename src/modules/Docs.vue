@@ -2,79 +2,22 @@
 
   <div id="app">
   <div class="container">
-    <logo></logo>
     <hello :msg="msg" :show-link="false" ></hello>
-    <calendar v-model="value" showDateOnly :onDrawDate="onDrawDate" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder"></calendar>
-    <lorem :len="5"></lorem>
 
-    <calendar v-model="value" showDateOnly minDate="2017-12-29" maxDate="2018-01-27" @drawdate="onDrawDate2" :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder"></calendar>
-    <lorem :len="5"></lorem>
-
-    <div class="col-sm-offset-8">
-      <form class="form-horizontal">
-        <div class="form-group">
-          <label for="abcd" class="col-sm-5 control-label">Start Date:</label>
-          <div class="col-sm-5">
-            <calendar class="pull-left" element-id="abcd" v-model="value" :transfer="true"  :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2"></calendar>
-          </div>
-        </div>
-      </form>
-    </div>
-    <div class="col-sm-offset-8x">
-      <form class="form-horizontal">
-        <div class="form-group">
-          <label for="abcdd" class="col-sm-5 control-label">Start Date:</label>
-          <div class="col-sm-5">
-            <calendar class="pull-left" element-id="abcdd" v-model="value" :transfer="true"  :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2"></calendar>
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <lorem :len="10"></lorem>
-    <div style="height: 300px;">
-      <calendar v-model="value"  :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick1"></calendar>
-      <p>{{date1}}</p>
-    </div>
-    <lorem :len="3"></lorem>
-
-    <div style="height: 300px;">
-    <!-- range-bus example -->
-      <calendar v-model="value"   :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :range-bus="getBus" :range-status="1"></calendar>
-       <calendar v-model="value2" :value="value2"  :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :range-bus="getBus" :range-status="2"></calendar>
-    </div>
-    <lorem :len="3"></lorem>
-
-
-    <div style="height: 300px;">
-      <calendar v-model="value"  :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick2" :special-days="_dateMap">
-      </calendar>
-      <p>{{date2}}</p>
-    </div>
-    <lorem :len="3"></lorem>
     <div style="height: 600px;">
-      <calendar class="event-calendar" v-model="value"  :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick3" :change-pane="changePane">
+      <calendar class="event-calendar" v-model="value"  :disabled-days-of-week="disabled" :format="format" 
+        :clear-button="clear" :placeholder="placeholder" 
+        :pane="12" :has-input="false"
+        :on-day-click="onDayClick3" :change-pane="changePane">
+
         <div class="event" v-for="(evt, index) in events" :key="index" :slot="evt.date">
-            ${{evt.content}} <i :class="{low : evt.low}" v-if="evt.low">↓</i>
+            {{evt.content}} <i :class="{low : evt.low}" v-if="evt.low">↓</i>
         </div>
+
       </calendar>
       <p>{{date3}}</p>
     </div>
-    <lorem :len="3"></lorem>
-    <div style="height: 600px;">
-      <calendar class="event-calendar" v-model="value"  :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder" :pane="2" :has-input="false" :on-day-click="onDayClick4" :change-pane="changePane2">
-        <div class="event" v-for="(evt, index) in lurevents" :key="index" :slot="evt.date">
-            <div style="font-size:12px;" v-html="evt.content"></div>
-        </div>
-      </calendar>
-      <p>{{date4}}</p>
-    </div>
 
-    <lorem :len="6"></lorem>
-    <div class="text-center">
-      Happy 1024!
-    </div>
-    <p class="lorem">consectetur adipisicing elit,</p>
   </div>
   </div>
 </template>
@@ -218,6 +161,7 @@ export default {
     },
     onDayClick3 (date, str) {
       this.date3 = str
+      alert('You clicked on ' + str)
     },
     changePane (year, month, pane) {
       this.events = []
@@ -310,7 +254,7 @@ export default {
         for (let i = 1; i <= monthCounts; i++) {
           data.push({
             date: this.stringify(new Date(year, month + p, i)),
-            content: this.random(100, 1000),
+            content: 'TEST', //this.random(100, 1000),
             low: this.random(1)
           })
         }

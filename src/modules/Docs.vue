@@ -254,7 +254,7 @@ export default {
         for (let i = 1; i <= monthCounts; i++) {
           data.push({
             date: this.stringify(new Date(year, month + p, i)),
-            content: 'TEST', //this.random(100, 1000),
+            content: 'TESTX', //this.random(100, 1000),
             low: this.random(1)
           })
         }

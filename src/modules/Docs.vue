@@ -1,12 +1,12 @@
 <template>
 
   <div id="app">
-  <div class="container">
+  <div class="">
     <hello :msg="msg" :show-link="false" ></hello>
 
     <div style="height: 600px;">
-      <calendar class="event-calendar" v-model="value"  :disabled-days-of-week="disabled" :format="format" 
-        :clear-button="clear" :placeholder="placeholder" 
+      <calendar class="event-calendar" v-model="value"  :disabled-days-of-week="disabled" :format="format"
+        :clear-button="clear" :placeholder="placeholder"
         :pane="12" :has-input="false"
         :on-day-click="onDayClick3" :change-pane="changePane">
 
@@ -280,31 +280,5 @@ export default {
 .lorem{
   visibility: hidden;
 }
-.event-calendar {
-  .datepicker-inner{
-    width: 440px;
-  }
-  .datepicker-body{
-    span{
-      width: 60px;
-      height: 60px;
-      vertical-align: top;
-    }
-    .event{
-      color: #E56700;
-    }
-    .low{
-      color: red;
-      font-weight: bold;
-    }
-    .datepicker-monthRange span{
-      width: 100px;
-      height: 100px;
-      vertical-align: middle;
-      line-height: 100px;
-      // font-weight: 600;
-    }
-  }
 
-}
 </style>

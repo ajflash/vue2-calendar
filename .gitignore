@@ -14,3 +14,5 @@ test/unit/coverage
 *.ntvs*
 *.njsproj
 *.sln
+package.json
+package-lock.json

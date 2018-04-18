@@ -1,24 +1,27 @@
 <template>
-
   <div id="app">
-  <div class="">
-    <hello :msg="msg" :show-link="false" ></hello>
-
-    <div style="height: 600px;">
-      <calendar class="event-calendar" v-model="value"  :disabled-days-of-week="disabled" :format="format"
-        :clear-button="clear" :placeholder="placeholder"
-        :pane="12" :has-input="false"
-        :on-day-click="onDayClick3" :change-pane="changePane">
-
-        <div class="event" v-for="(evt, index) in events" :key="index" :slot="evt.date">
-            {{evt.content}} <i :class="{low : evt.low}" v-if="evt.low">↓</i>
-        </div>
-
-      </calendar>
-      <p>{{date3}}</p>
+    <div class="event-calendar--wrapper">
+        <calendar
+          class="event-calendar"
+          v-model="value"
+          :disabled-days-of-week="disabled"
+          :format="format"
+          :clear-button="clear"
+          :placeholder="placeholder"
+          :pane="12"
+          :has-input="false"
+          :on-day-click="onDayClick3"
+          :change-pane="changePane"
+        >
+          <div class="event" v-for="(evt, index) in events" :key="index" :slot="evt.date">
+            <div class="event--text">
+              {{evt.content}}
+            </div>
+            <i :class="{low : evt.low}" v-if="evt.low">↓</i>
+          </div>
+        </calendar>
+      </div>
     </div>
-
-  </div>
   </div>
 </template>
 <script>

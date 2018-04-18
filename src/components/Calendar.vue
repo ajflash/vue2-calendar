@@ -12,7 +12,6 @@
                 </div> -->
                   <span v-for="d in dateRange[pan]" class="day-cell" :class="getItemClasses(d)" :data-date="stringify(d.date)" @click="daySelect(d, $event)"><div>
                     <template v-if="d.sclass !== 'datepicker-item-gray'">
-
                       {{getSpecailDay(d.date) || d.text}}
                     </template>
                     <template v-else>

@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>vue2-calendar</title>
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
-
     <script src="https://vuejs.org/js/vue.js"></script>
     <link rel="stylesheet" href="../lib/calendar.min.css" >
     <script src="../lib/calendar.js"></script>
@@ -16,15 +12,22 @@
 <body>
 
     <div id="app">
-           <calendar v-model="value" show-date-only :disabled-days-of-week="disabled" :format="format" :clear-button="clear" :placeholder="placeholder"></calendar>
+          <calendar
+          v-model="value"
+          show-date-only :disabled-days-of-week="disabled"
+          :format="format"
+          :clear-button="clear"
+          :placeholder="placeholder"
+          >
+          </calendar>
     </div>
       <script>
         new Vue({
             el: '#app',
             data: function () {
                 return {
-                    disabled: [],
-                    value: '2015-06-10',
+                    disabled: ['2018-06-10'],
+                    value: '2018-01-1',
                     format: 'yyyy-MM-dd',
                     clear: true,
                     placeholder: 'Start Date'

@@ -4,16 +4,13 @@ import Docs from './modules/Docs'
 import 'bootstrap-sass'
 import pp from '../package.json'
 
+import Vue from 'vue'
+import Vuetify from 'vuetify'
+
+Vue.use(Vuetify)
+
 const routemaps = {
   '/': function () {
-    /* eslint-disable no-new */
-    new Vue({
-      el: '#app',
-      template: '<App/>',
-      components: { App }
-    })
-  },
-  '/demo/': function () {
     /* eslint-disable no-new */
     new Vue({
       el: '#app',

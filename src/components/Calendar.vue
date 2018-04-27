@@ -1,7 +1,7 @@
 <template>
   <div class="datepicker">
     <div class="datepicker-wrapper  mdl-shadow--2dp" ref="popup" v-transfer="transfer" v-show="isWrapperShow" :style="" >
-      <div class="datepicker-padding"  @mouseover="handleMouseOver" @mouseout="handleMouseOver" v-show="displayDayView">
+      <div class="datepicker-padding" @mouseover="handleMouseOver" @mouseout="handleMouseOver" v-show="displayDayView">
         <template v-for="(p, pan) in pane" >
             <div class="datepicker-body calendar--width ">
               <div class="calendar--width--content">
@@ -20,9 +20,7 @@
                     <div v-if="d.sclass !== 'datepicker-item-gray'"><slot :name="stringify(d.date)"></slot></div></div>
                   </span>
                 </div>
-
               </div>
-
             </div>
         </template>
       </div>
@@ -859,7 +857,7 @@ input.datepicker-input.with-reset-button {
 }
 
 .calendar--width {
-  width: calc(100%/3);
+  width: calc(100%/4);
   display: inline-block;
   box-sizing: border-box;
   .calendar--width--content {
@@ -875,26 +873,35 @@ input.datepicker-input.with-reset-button {
   margin-bottom: 4px;
 }
 
-.event-calendar .datepicker-body span >div {
+.event-calendar .datepicker-body .day-cell >div {
   border: 2px solid white;
   height: 45px;
-  overflow : hidden;
-  line-height: 45px;
+  overflow: hidden;
   font-size: 11px;
+  text-align: right;
+  padding-right: 3px;
+  padding-top: 1px;
+  line-height: 11px;
 }
 
-.event-calendar .datepicker-body span i {
+.event-calendar .datepicker-body .day-cell i {
   font-weight: bold;
   position: absolute;
-  top: 11px;
-  right: 5px;
+  top: 4px;
+  left: 4px;
   font-size: 8px;
+  &.mark {
+    height: 6px;
+    width: 6px;
+    background-color: #E56700;
+    border-radius: 1px;
+  }
 }
 
-.event-calendar .datepicker-body span {
+.event-calendar .datepicker-body .day-cell {
   background: #f4f4f4;
   width : calc(100%/7);
-  height: 45px;
+  height : 45px;
   box-sizing: border-box;
   overflow : hidden;
   position: relative;
@@ -907,13 +914,49 @@ input.datepicker-input.with-reset-button {
 }
 
 .event--text {
-  position: absolute;
-  top: -12px;
-  left: 3px;
-  font-size: 9px;
+  position : absolute;
+  bottom : -4px;
+  font-size: 8px;
+  .text__line {
+    font-size: 9px;
+    margin: 0;
+    height: 9px;
+    line-height: 8px;
+    position: relative;
+    top: -6px;
+    padding-left: 1px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 }
+
+.day-cell--outline {
+  border: solid black 1px;
+}
+
 
 .datepicker-padding {
   padding: 13px;
 }
+@media all and (max-width: 1024px) {
+  .datepicker-padding {
+    padding: 2px;
+  }
+
+  .calendar--width {
+    .calendar--width--content {
+      margin: 2px;
+    }
+  }
+
+  .event-calendar {
+    .datepicker-body{
+      span{
+        height: 30px;
+      }
+    }
+  }
+}
+
 </style>

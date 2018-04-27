@@ -1,90 +1,155 @@
 <template>
   <div id="app">
     <div class="event-calendar--wrapper">
-        <calendar
-          class="event-calendar"
-          v-model="value"
-          :disabled-days-of-week="disabled"
-          :format="format"
-          :clear-button="clear"
-          :placeholder="placeholder"
-          :pane="12"
-          :has-input="false"
-          :on-day-click="onDayClick3"
-          :change-pane="changePane"
-        >
-          <div class="event" v-for="(evt, index) in events" :key="index" :slot="evt.date">
-            <div class="event--text">
-              {{evt.content}}
-            </div>
-            <i :class="{low : evt.low}" v-if="evt.low">↓</i>
+      <calendar
+        class="event-calendar"
+        v-model="value"
+        :format="format"
+        :clear-button="clear"
+        :placeholder="placeholder"
+        :pane="12"
+        :has-input="false"
+        :on-day-click="onDayClick3"
+        :change-pane="changePane"
+        :onDrawDate = "onDrawDate"
+        ref="idCalendar"
+      >
+        <div class="event" :key="index" v-for="(evt, index) in events" :slot="evt.date" :style="{background:evt.bgFill}">
+          <div class="event--text">
+            <p class="text__line text__line--1">{{evt.contentLine1}}</p>
+            <p class="text__line text__line--2">{{evt.contentLine2}}</p>
+            <p class="text__line text__line--3">{{evt.contentLine3}}</p>
           </div>
-        </calendar>
-      </div>
+          <i class="material-icons" :class="{mark : evt.mark}" v-if="evt.mark">
+            <!-- label -->
+            <!-- bookmark -->
+          </i>
+        </div>
+      </calendar>
     </div>
+    <form v-if="showDialog"
+        class="formulario"
+        action=""
+        @submit.prevent="computeShowData(newEvent); showDialog = false"
+      >
+      <span>Dia:{{this.newEvent.date}}</span>
+      <a @click.prevent="showDialog = false ;
+        newEvent.contentLine1='' ;
+        newEvent.contentLine2='' ;
+        newEvent.contentLine3='';
+        newEvent.mark = false" href="#">X</a>
+      <br>
+      <label for="text-01">texto 1</label>
+      <input id="text-01" type="text" :value="newEvent.contentLine1">
+      <br>
+      <label for="text-02">texto 2</label>
+      <input id="text-02" type="text" :value="newEvent.contentLine2">
+      <br>
+      <label for="text-03">texto 3</label>
+      <input id="text-03" type="text" :value="newEvent.contentLine3">
+      <br>
+      <label for="mark"> mark </label>
+      <input type="checkbox" id="mark" :value="newEvent.mark">
+      <label for="outline"> outline </label>
+      <input type="checkbox" id="outline" :value="newEvent.outline">
+      <br>
+      <input type="submit" value="enviar">
+    </form>
   </div>
 </template>
 <script>
+
 import Vue from 'vue'
-import Logo from 'components/Logo'
-import Hello from 'components/Hello'
-import Lorem from 'components/Lorem'
 import Calendar from 'components/Calendar'
-import lunar from 'utils/lunar'
 export default {
   name: 'docs',
   data () {
     return {
-      msg: 'Component Demo',
       disabled: [],
+      showDialog: false,
+      showData: '',
       value: this.stringify(new Date()),
-      value2: '',
-      date1: '',
-      date2: '',
-      date3: '',
-      date4: '',
-      events: [],
+      newEvent: {
+        date: '',
+        contentLine1: '',
+        contentLine2: '',
+        contentLine3: '',
+        bgFill: '',
+        mark: 'false',
+        outline: 'false'
+      },
+      events: [
+        {
+          date: '2018-01-01',
+          contentLine1: 'text--1',
+          contentLine2: 'text--2',
+          contentLine3: 'text--3',
+          bgFill: 'red',
+          mark: true,
+          outline: 'false'
+        },
+        {
+          date: '2018-01-10',
+          contentLine1: 'text 1',
+          contentLine2: 'text 2',
+          contentLine3: 'text 3',
+          bgFill: 'blue',
+          mark: true,
+          outline: 'false'
+        },
+        {
+          date: '2018-01-31',
+          contentLine1: 'incidencia',
+          contentLine2: 'médico',
+          contentLine3: 'cambio',
+          bgFill: 'gray',
+          mark: true,
+          outline: 'false'
+        },
+        {
+          date: '2018-02-20',
+          contentLine1: 'retraso',
+          contentLine2: 'médico',
+          contentLine3: 'cambio',
+          bgFill: 'cian',
+          mark: true,
+          outline: 'false'
+        },
+        {
+          date: '2018-03-14',
+          contentLine1: 'info',
+          contentLine2: 'médico',
+          contentLine3: 'cambio',
+          bgFill: 'none',
+          mark: true,
+          outline: 'false'
+        },
+        {
+          date: '2018-03-15',
+          contentLine1: 'vacaciones',
+          contentLine2: 'médico',
+          contentLine3: 'cambio',
+          bgFill: 'none',
+          mark: true,
+          outline: 'false'
+        }
+      ],
       lurevents: [],
       format: 'yyyy-MM-dd',
       clear: true,
       isHoliday: true,
-      placeholder: 'placeholder is displayed',
-      DATENAME: {
-        'today': '今天',
-        'yuandan': '元旦',
-        'chuxi': '除夕',
-        'chunjie': '春节',
-        'yuanxiao': '元宵',
-        'qingming': '清明',
-        'wuyi': '劳动',
-        'duanwu': '端午',
-        'zhongqiu': '中秋',
-        'guoqing': '国庆'
-      },
-      HOLIDAYS: {
-        yuandan: ['2012-01-01', '2013-01-01', '2014-01-01', '2015-01-01', '2016-01-01', '2017-01-01', '2018-01-01', '2019-01-01', '2020-01-01'],
-        chuxi: ['2012-01-22', '2013-02-09', '2014-01-30', '2015-02-18', '2016-02-07', '2017-01-27', '2018-02-15', '2019-02-04', '2020-01-24'],
-        chunjie: ['2012-01-23', '2013-02-10', '2014-01-31', '2015-02-19', '2016-02-08', '2017-01-28', '2018-02-16', '2019-02-05', '2020-01-25'],
-        yuanxiao: ['2012-02-06', '2013-02-24', '2014-02-14', '2015-03-05', '2016-02-22', '2017-02-11', '2018-03-02', '2019-02-19', '2020-02-08'],
-        qingming: ['2012-04-04', '2013-04-04', '2014-04-05', '2015-04-05', '2016-04-04', '2017-04-04', '2018-04-05', '2019-04-05', '2020-04-04'],
-        wuyi: ['2012-05-01', '2013-05-01', '2014-05-01', '2015-05-01', '2016-05-01', '2017-05-01', '2018-05-01', '2019-05-01', '2020-05-01'],
-        duanwu: ['2012-06-23', '2013-06-12', '2014-06-02', '2015-06-20', '2016-06-09', '2017-05-30', '2018-06-18', '2019-06-07', '2020-06-25'],
-        zhongqiu: ['2012-09-30', '2013-09-19', '2014-09-08', '2015-09-27', '2016-09-15', '2017-10-04', '2018-09-24', '2019-09-13', '2020-10-01'],
-        guoqing: ['2012-10-01', '2013-10-01', '2014-10-01', '2015-10-01', '2016-10-01', '2017-10-01', '2018-10-01', '2019-10-01', '2020-10-01']
-      }
+      placeholder: 'placeholder is displayed'
     }
   },
   components: {
-    Logo,
-    Hello,
-    Lorem,
     Calendar
   },
   created () {
     this.bus = new Vue()
+    this.value = '2018-01-01'
   },
   mounted () {
-
+    this.getEventContent()
   },
   computed: {
     _dateMap () {
@@ -98,7 +163,7 @@ export default {
     onDrawDate (e) {
       let date = e.date
       if (new Date().getTime() > date.getTime()) {
-        e.allowSelect = false
+        e.allowSelect = true
       }
     },
     onDrawDate2 (e) {
@@ -163,8 +228,40 @@ export default {
       this.date2 = this.getDateInfo(str) || str
     },
     onDayClick3 (date, str) {
+      this.showDialog = true
       this.date3 = str
-      alert('You clicked on ' + str)
+      let evt = this.events
+      for (let i = 0; i < evt.length; i++) {
+        if (str === evt[i].date) {
+          this.newEvent = {
+            bgFill: evt[i].bgFill,
+            contentLine1: evt[i].contentLine1,
+            contentLine2: evt[i].contentLine2,
+            contentLine3: evt[i].contentLine3,
+            date: str,
+            mark: evt[i].mark,
+            outline: evt[i].outline
+          }
+        }
+      }
+      // this.newEvent = {
+      //   bgFill: this.newEvent.bgFill,
+      //   contentLine1: this.newEvent.contentLine1,
+      //   contentLine2: this.newEvent.contentLine2,
+      //   contentLine3: this.newEvent.contentLine3,
+      //   date: str,
+      //   mark: false,
+      //   outline: false
+      // }
+      var addDate = this.newEvent
+      this.showData = this.computeShowData(addDate)
+      // let calendar = this.$refs['idCalendar']
+      // console.log(this.events)
+    },
+    computeShowData (addDate) {
+      var dateCalendar = this.getEventContent()
+      dateCalendar.push(addDate)
+      return JSON.stringify(dateCalendar)
     },
     changePane (year, month, pane) {
       this.events = []
@@ -175,23 +272,6 @@ export default {
     },
     onDayClick4 (date, str) {
       this.date4 = str
-    },
-    changePane2 (year, month, pane) {
-      var Today = new Date()
-      var ty = parseInt(Today.getFullYear())
-      var tm = parseInt(Today.getMonth())
-      var td = parseInt(Today.getDate())
-      var days = []
-      for (var i = 0; i < pane; i++) {
-        var date = new Date(year, month + i)
-        var r = new lunar.Calendar(date.getFullYear(), date.getMonth(), ty, tm, td)
-        days = days.concat([].slice.call(r, 0))
-      }
-      for (var j = 0; j < days.length; j++) {
-        days[j].date = this.stringify(new Date(days[j].sYear, days[j].sMonth - 1, days[j].sDay))
-        days[j].content = this.foramtDay(days[j])
-      }
-      this.lurevents = days
     },
     foramtDay (el) {
       /* eslint-disable */
@@ -250,18 +330,18 @@ export default {
       return min + Math.floor(Math.random() * (max - min + 1))
     },
     getEventContent (year, month, pane) {
-      const data = []
-      for (let p = 0; p < pane; p++) {
-        let date = new Date(year, month + p)
-        let monthCounts = this.getDayCount(date.getFullYear(), date.getMonth())
-        for (let i = 1; i <= monthCounts; i++) {
-          data.push({
-            date: this.stringify(new Date(year, month + p, i)),
-            content: 'TESTX', //this.random(100, 1000),
-            low: this.random(1)
-          })
-        }
-      }
+      const data = this.events
+      // for (let p = 0; p < pane; p++) {
+      //   let date = new Date(year, month + p)
+      //   let monthCounts = this.getDayCount(date.getFullYear(), date.getMonth())
+      //   for (let i = 1; i <= monthCounts; i++) {
+      //     data.push({
+      //       date: this.stringify(new Date(year, month + p, i)),
+      //       content: 'texto', //this.random(100, 1000),
+      //       low: this.random(1)
+      //     })
+      //   }
+      // }
       return data
     }
 
@@ -280,8 +360,45 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-.lorem{
-  visibility: hidden;
+
+
+.formulario {
+  input {
+    border : 1px solid gray;
+  }
+  a {
+    background: red;
+    color: white;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 10px;
+    border-radius: 50%;
+    box-shadow:rgba(0,0,0,0.5) 1px 1px 2px 1px;
+    transition: all 0.1s;
+    &:hover {
+      transition: all 0.1s;
+      top: 7px;
+      text-decoration: none;
+      background: rgb(224, 0, 0);
+      color: white;
+      box-shadow:rgba(0,0,0,0.5) 0px 0px 2px 1px;
+    }
+  }
+  position: relative;
+  text-align: center;
+  padding: 20px;
+  width : 300px;
+  height: auto;
+  position: fixed;
+  left: calc(50% - 150px);
+  top: 100px;
+  background: white;
+  box-shadow:rgba(0,0,0,0.5) 1px 1px 2px 1px;
 }
 
 </style>
